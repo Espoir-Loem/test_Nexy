@@ -1,16 +1,6 @@
-
-from nexy import Params, useView,HTMLResponse
+from app.view import App
+from nexy import Params, HTMLResponse
 
 @Params(response_class=HTMLResponse)
 def GET(): 
-    return useView(
-        {
-            "name":"Espoir",
-            "image":{"a":"a","b":"b"},
-            "users":["Espoir","Force","Loemba","Packa"]
-        }
-        ,"index.html")
-
-
-
-    
+    return f"{App()}"

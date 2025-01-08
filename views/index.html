@@ -1,19 +1,37 @@
-{% extends "base.html" %}
-{% block content %}
-<img src="/{{image.get("a")}}.png" loading="lazy"style="width:81.5vw"/>
-    <h1>Hello, {{ name }}!</h1>
-    <p>Here is a list of items:</p>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WebSocket Test</title>
+    </head>
+    <link rel="stylesheet" href="/public/assets/css/main.css">
+    <body style="height: 100vh; display: flex; flex-direction: column; justify-content: center;">
+        <h1>Test WebSocket</h1>
+        
+        <ul style="background-color: rgb(140, 157, 152); height: 100%;border-radius: 30px;" id="messages" >
+            <li><span>Me</span> text </li>
+            <li><span>serveur</span> text</li>
+        </ul>
+        <div style="">
+            <input type="text" id="messageInput" placeholder="Tapez un message..." />
+            <button onclick="sendMessage()">Envoyer</button>
+        </div>
 
-    {{contenu}}
-    <ul>
-        {% for item in users %}
-            <li>{{ item }}</li>
-        {% endfor %}
-    </ul>
-    <img src="/{{image.get("b")}}.png" loading="lazy"style="width:81.5vw"/>
-    <ul>
-        {% for item in users %}
-            <li>{{ item }}</li>
-        {% endfor %}
-    </ul>
-{% endblock %}
+        <script>
+            const ws = new WebSocket("ws://127.0.0.1:8000/documents/1/12/ws");
+            const messages = document.getElementById("messages");
+            const messageInput = document.getElementById("messageInput");
+
+            ws.onmessage = function(event) {
+                const li = document.createElement("li")
+
+                messages.value += "Serveur: " + event.data + "\n";
+            };
+
+            function sendMessage() {
+                const message = messageInput.value;
+                ws.send(message);
+                messages.value += "Vous: " + message + "\n";
+                messageInput.value = "";
+            }
+        </script>
+    </body>
